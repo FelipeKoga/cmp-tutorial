@@ -1,6 +1,10 @@
-## Compose Multiplatform and Kotlin Multiplatform tutorial
+## Compose Multiplatform and Kotlin Multiplatform Tutorial
 
-### About
+## API
+
+MMO Games API - By MMOBomb
+https://www.mmobomb.com/api
+
 
 ### Screenshots
 
