@@ -4,5 +4,5 @@
 
 ### Screenshots
 
-| <img src="./docs/games.png"> | <img src="details1.png">  | <img src="details2.png"> | <img src="sortby.png"> | <img src="categories"> |
+| <img src="./screenshots/games.png"> | <img src="./screenshots/details1.png">  | <img src="./screenshots/details2.png"> | <img src="./screenshots/sortby.png"> | <img src="./screenshots/categories"> |
 |--------------------| ------------- | ------------- | ------------- | ------------- |
