@@ -23,4 +23,37 @@ class GameRepositoryImpl : GameRepository {
             emit(Resource.Error)
         }
     }
+
+// Segunda opção:
+//    suspend fun getGames2(): SimpleResult<List<SimpleGame>> {
+//        return try {
+//            val response = gamesApi.getGames()
+//
+//            val games = response.map { game -> game.toDomain() }
+//
+//            SimpleResult.Success(data = games)
+//        } catch (e: Exception) {
+//            SimpleResult.Error
+//        }
+//    }
+
+// Terceira opção:
+//    private val _games = MutableStateFlow<Resource<List<SimpleGame>>>(
+//        Resource.Loading
+//    )
+//    val games = _games.asStateFlow()
+//
+//    suspend fun loadGames() {
+//        try {
+//            _games.update { Resource.Loading }
+//
+//            val response = gamesApi.getGames()
+//
+//            val games = response.map { game -> game.toDomain() }
+//
+//            _games.update { Resource.Success(data = games) }
+//        } catch (e: Exception) {
+//            _games.update { Resource.Error }
+//        }
+//    }
 }

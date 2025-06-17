@@ -6,3 +6,8 @@ sealed interface Resource<out T> {
     data class Success<T>(val data: T): Resource<T>
     data object Error : Resource<Nothing>
 }
+
+sealed interface SimpleResult<out T> {
+    data class Success<T>(val data: T): SimpleResult<T>
+    data object Error : SimpleResult<Nothing>
+}
