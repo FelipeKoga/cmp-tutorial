@@ -41,7 +41,10 @@ class GameRepositoryImplTest {
         )
 
         runTest {
-            repository.getGames().test {
+            repository.getGames(
+                platform = null,
+                orderBy = null,
+            ).test {
                 assertEquals(
                     expected = Resource.Loading,
                     actual = awaitItem()
@@ -65,7 +68,10 @@ class GameRepositoryImplTest {
         api.shouldFailNextGamesRequest()
 
         runTest {
-            repository.getGames().test {
+            repository.getGames(
+                platform = null,
+                orderBy = null,
+            ).test {
                 assertEquals(
                     expected = Resource.Loading,
                     actual = awaitItem()

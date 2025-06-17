@@ -2,21 +2,23 @@ package dev.koga.cmptutorial.games.data.repository
 
 import dev.koga.cmptutorial.foundation.model.Resource
 import dev.koga.cmptutorial.games.data.network.GamesApi
-import dev.koga.cmptutorial.games.data.network.gamesApi
 import dev.koga.cmptutorial.games.data.network.toDomain
 import dev.koga.cmptutorial.games.domain.model.GameDetails
+import dev.koga.cmptutorial.games.domain.model.GamePlatform
+import dev.koga.cmptutorial.games.domain.model.GamesOrderBy
 import dev.koga.cmptutorial.games.domain.model.SimpleGame
 import dev.koga.cmptutorial.games.domain.repository.GameRepository
-import io.ktor.serialization.JsonConvertException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlin.coroutines.cancellation.CancellationException
 
 class GameRepositoryImpl(
     private val api: GamesApi,
 ) : GameRepository {
 
-    override fun getGames(): Flow<Resource<List<SimpleGame>>> = flow {
+    override fun getGames(
+        platform: GamePlatform?,
+        orderBy: GamesOrderBy?
+    ): Flow<Resource<List<SimpleGame>>> = flow {
         emit(Resource.Loading)
 
         try {
