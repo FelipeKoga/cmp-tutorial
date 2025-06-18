@@ -1,12 +1,17 @@
 package dev.koga.cmptutorial.games.ui
 
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.jensklingenberg.ktorfit.ktorfit
 import dev.koga.cmptutorial.foundation.model.Resource
+import dev.koga.cmptutorial.games.domain.model.Filter
 import dev.koga.cmptutorial.games.domain.model.GamePlatform
 import dev.koga.cmptutorial.games.domain.model.GamesOrderBy
 import dev.koga.cmptutorial.games.domain.repository.GameRepository
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +23,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
-data class Filter(
-    val orderBy: GamesOrderBy?,
-    val platform: GamePlatform?,
-)
 
 class GamesViewModel(
     private val repository: GameRepository,
