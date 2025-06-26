@@ -1,29 +1,13 @@
 package dev.koga.cmptutorial.games.ui
 
-import androidx.compose.runtime.MutableState
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.jensklingenberg.ktorfit.ktorfit
 import dev.koga.cmptutorial.foundation.model.Resource
 import dev.koga.cmptutorial.games.domain.model.Filter
 import dev.koga.cmptutorial.games.domain.model.GamePlatform
 import dev.koga.cmptutorial.games.domain.model.GamesOrderBy
 import dev.koga.cmptutorial.games.domain.repository.GameRepository
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.flow.*
 
 
 class GamesViewModel(
@@ -51,6 +35,8 @@ class GamesViewModel(
         )
     )
 
+    private val onRetry = SharingRestartable(SharingStarted.WhileSubscribed())
+
     val uiState = filter.flatMapLatest { filter ->
         repository.getGames(
             platform = filter.platform,
@@ -58,7 +44,7 @@ class GamesViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
+        started = onRetry,
         initialValue = Resource.Loading
     )
 
@@ -81,5 +67,9 @@ class GamesViewModel(
                 platform,
             )
         }
+    }
+
+    fun onRetry() {
+        onRetry.restart()
     }
 }

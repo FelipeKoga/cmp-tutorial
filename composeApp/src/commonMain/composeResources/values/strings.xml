@@ -1,0 +1,4 @@
+<resources>
+    <string name="game_screen_error_title">Deu zika</string>
+    <string name="game_screen_error_on_retry_btn">Tentar novamente</string>
+</resources>

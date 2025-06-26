@@ -1,41 +1,24 @@
 package dev.koga.cmptutorial.games.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Badge
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import cmp_tutorial.composeapp.generated.resources.Res
+import cmp_tutorial.composeapp.generated.resources.game_screen_error_on_retry_btn
+import cmp_tutorial.composeapp.generated.resources.game_screen_error_title
 import coil3.compose.AsyncImage
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Calendar
@@ -43,6 +26,7 @@ import compose.icons.tablericons.DeviceGamepad
 import compose.icons.tablericons.DevicesPc
 import dev.koga.cmptutorial.foundation.model.Resource
 import dev.koga.cmptutorial.games.domain.model.SimpleGame
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,8 +69,48 @@ fun GamesScreen(
         },
     ) { contentPadding ->
         when (val uiState = uiState) {
-            Resource.Loading -> Box(Modifier)
-            Resource.Error -> Box(Modifier)
+            Resource.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            Resource.Error -> {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.game_screen_error_title),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                        )
+
+                        Spacer(Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                viewModel.onRetry()
+                            }
+                        ) {
+                            Text(text = stringResource(Res.string.game_screen_error_on_retry_btn))
+                        }
+                    }
+                }
+            }
+
             is Resource.Success<List<SimpleGame>> -> {
                 LazyColumn(
                     modifier = Modifier.padding(contentPadding),
